@@ -1,11 +1,11 @@
 (function(){
   function start(D){
-    var N=D.news, CATS=D.cats, WD=D.wd, TODAY=D.today;
+    var N=D.news, CATS=D.cats, WD=D.wd, DN=D.dn||{}, TODAY=D.today;
     var vista=document.getElementById('vista'), home=document.getElementById('home');
     var BYP={}; N.forEach(function(x){BYP[x.p]=x;});
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     function word(n){return n+(n===1?' notizia':' notizie');}
-    function leaf(d,sm){return '<span class="leaf'+(sm?' sm':'')+'"><b>'+WD[d]+'</b><i>'+d+'</i></span>';}
+    function leaf(d,sm){return '<span class="leaf'+(sm?' sm':'')+'"><b>'+WD[d]+'</b><i>'+(DN[d]||d)+'</i></span>';}
     function ago(d){var k=TODAY-d;return k===0?'oggi':k===1?'ieri':k+' giorni fa';}
     function week(d){var s='<span class="week" aria-hidden="true">';for(var k=TODAY-7;k<=TODAY;k++)s+='<i'+(k===d?' class="on"':'')+'></i>';return s+'</span>';}
     function srcs(f,n){return f.length<=n+1?f.join(' · '):f.slice(0,n).join(' · ')+' e altre '+(f.length-n);}
@@ -15,7 +15,7 @@
     function nart(x){return x.ar.length+' articoli di '+x.n+' testate';}
     function listHtml(x){
       return '<ol class="arts">'+x.ar.map(function(r){
-        return '<li><a href="'+esc(r[2])+'" target="_blank" rel="noopener"><span class="af">'+esc(r[0])+'</span><span class="at">'+esc(r[1])+'</span><span class="ad">'+WD[r[3]]+' '+r[3]+'</span></a></li>';
+        return '<li><a href="'+esc(r[2])+'" target="_blank" rel="noopener"><span class="af">'+esc(r[0])+'</span><span class="at">'+esc(r[1])+'</span><span class="ad">'+WD[r[3]]+' '+(DN[r[3]]||r[3])+'</span></a></li>';
       }).join('')+'</ol>';
     }
     function decorate(root){
