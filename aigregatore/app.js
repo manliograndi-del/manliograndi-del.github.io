@@ -153,7 +153,8 @@
   /* ultim'ora: controllata ogni 10 minuti da un programma a parte (ultimora.json) */
   function uo(U){
     var hm=function(t){try{return new Date(t.replace(' ','T')+':00Z').toLocaleTimeString('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'});}catch(e){return '';}};
-    var o=document.getElementById('agg-ora'); if(o&&U.ora&&U.ora>(o.getAttribute('data-t')||'')) o.textContent=hm(U.ora);
+    var o=document.getElementById('agg-ora'); if(o&&U.ora&&U.ora>(o.getAttribute('data-t')||'')){ o.textContent=hm(U.ora);
+      var gg=document.getElementById('agg-giorno'); try{ if(gg) gg.textContent=new Date(U.ora.replace(' ','T')+':00Z').toLocaleDateString('it-IT',{timeZone:'Europe/Rome',weekday:'long'}); }catch(e){} }
     var home=document.getElementById('home'), top=document.querySelector('nav.top'); if(!home||!top||!U.notizie||!U.notizie.length) return;
     var E=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
     var h='<section class="uo" aria-label="Ultim’ora"><p class="uo-lab"><i></i>Ultim’ora</p><ol>'+U.notizie.map(function(n){
