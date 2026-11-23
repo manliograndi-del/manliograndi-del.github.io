@@ -162,15 +162,16 @@
     var o=document.getElementById('agg-ora'); if(o&&U.ora&&U.ora>(o.getAttribute('data-t')||'')){ o.textContent=hm(U.ora);
       var gg=document.getElementById('agg-giorno'); try{ if(gg) gg.textContent=new Date(U.ora.replace(' ','T')+':00Z').toLocaleDateString('it-IT',{timeZone:'Europe/Rome',weekday:'long'}); }catch(e){} }
     var home=document.getElementById('home'), top=document.querySelector('.eds'); if(!home||!top||!U.notizie||!U.notizie.length) return;
+    var gg=function(t){try{return new Date(t.replace(' ','T')+':00Z').toLocaleDateString('it-IT',{timeZone:'Europe/Rome',weekday:'long'});}catch(e){return '';}};
     var E=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
     var h='<section class="uo" aria-label="Breaking News"><p class="uo-lab"><i></i>Breaking News</p><ol>'+U.notizie.map(function(n,k){
       var f=[];n.ar.forEach(function(a){if(f.indexOf(a[0])<0)f.push(a[0]);});
       return '<li><button type="button" class="uo-t" aria-expanded="false" data-k="'+k+'">'+E(n.t)+'</button>'+
-        '<span class="uo-f">'+(n.n2>=3?n.n2+' testate nelle ultime 2 ore':n.n6+' testate nelle ultime 6 ore')+' · '+E(f.join(' · '))+'</span>'+
+        '<span class="uo-f">'+f.length+' testate · '+E(f.join(' · '))+'</span>'+
         '<ol class="uo-arts" hidden>'+n.ar.map(function(a){
           return '<li><a href="'+E(a[2])+'" target="_blank" rel="noopener"><span class="af">'+E(a[0])+(a[3]?' <span class="gr">gratis</span>':'')+(a[4]?' · '+hm(a[4]):'')+'</span><span class="at">'+E(a[1])+'</span></a></li>';
         }).join('')+'</ol></li>';
-    }).join('')+'</ol><p class="uo-nota">Le notizie che le testate stanno riprendendo in questo momento. Si controlla ogni ora.</p></section>';
+    }).join('')+'</ol><p class="uo-nota">La notizia più importante del momento: resta qui finché non ne arriva una più importante. Si controlla ogni ora.</p></section>';
     top.insertAdjacentHTML('afterend',h);
     [].slice.call(document.querySelectorAll('.uo-t')).forEach(function(b){
       b.addEventListener('click',function(){

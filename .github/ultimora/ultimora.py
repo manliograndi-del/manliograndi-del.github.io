@@ -17,7 +17,7 @@ from email.utils import parsedate_to_datetime
 
 QUI = os.path.dirname(os.path.abspath(__file__))
 UA = {"User-Agent": "AIgregatore/0.1 (lettore di feed RSS; solo titoli e link)"}
-ORE, MAX_NOTIZIE = 6, 1  # Manlio: una notizia sola
+ORE, MAX_NOTIZIE = 6, 4  # se ne mostra una sola (vedi scrivi)
 # «ultim'ora» = notizia che corre: almeno 3 testate nelle ultime 2 ore, oppure almeno 5 nelle ultime 6 (Manlio, 23/11:
 # conta il ritmo con cui la riprendono, anche se la notizia è già nel sito)
 (ORE_RAPIDA, MIN_RAPIDA), MIN_LARGA = (2, 3), 5
@@ -137,10 +137,28 @@ def scrivi(gruppi, cartella, ora):
         notizie.append(dict(t=n["t"] if n else capo["titolo"], u=n["u"] if n else capo["link"], gratis=bool(n["g"]) if n else acc.get(capo["sito"]) == "libero",
                             it=bool(n) or capo["sito"] in ITALIANE, primo=g["art"][0]["data"], n2=len(g["siti2"]), n6=len(g["siti"]),
                             ar=recenti(g["art"], acc)))
+    # Manlio, 23/11: la notizia importante resta lì finché non ne arriva una più importante.
+    # Peso = testate che l'hanno ripresa (il massimo visto), che cala del 20% al giorno; una nuova la sostituisce solo se pesa di più.
     f = os.path.join(cartella, "ultimora.json")  # si riscrive a ogni controllo: l'ora dice alla pagina «aggiornato alle»
+    vecchio = (json.load(open(f, encoding="utf-8")).get("notizie") or [None])[0] if os.path.exists(f) else None
+    peso = lambda n, quando: n["picco"] * 0.8 ** max(0, (ora - dt.datetime.strptime(quando, "%Y-%m-%d %H:%M")).total_seconds() / 86400)
+    scelta = vecchio
+    for n in notizie[:1]:
+        n["picco"] = n["n6"]; n["picco_ora"] = ora.strftime("%Y-%m-%d %H:%M")
+        stessa = vecchio and (n["t"] == vecchio["t"] or {a[2] for a in n["ar"]} & {a[2] for a in vecchio["ar"]})
+        if stessa:  # la stessa vicenda: aggiungo gli articoli nuovi e tengo il picco più alto
+            link = {a[2] for a in n["ar"]}
+            n["ar"] = sorted(n["ar"] + [a for a in vecchio["ar"] if a[2] not in link], key=lambda a: a[4], reverse=True)
+            if vecchio.get("picco", 0) > n["picco"]: n["picco"], n["picco_ora"] = vecchio["picco"], vecchio["picco_ora"]
+            scelta = n
+        elif not vecchio or "picco" not in vecchio or peso(n, n["picco_ora"]) > peso(vecchio, vecchio["picco_ora"]): scelta = n
+    if scelta and scelta is vecchio:  # titolo italiano aggiornato se nel frattempo la notizia è entrata nel sito
+        dati = json.load(open(os.path.join(cartella, "dati.json"), encoding="utf-8")) if os.path.exists(os.path.join(cartella, "dati.json")) else {"news": []}
+        for x in dati["news"]:
+            if {a[2] for a in x.get("ar", [])} & {a[2] for a in scelta["ar"]}: scelta["t"], scelta["u"], scelta["gratis"] = x["t"], x["u"], bool(x["g"]); break
+    notizie = [scelta] if scelta else []
     json.dump(dict(ora=ora.strftime("%Y-%m-%d %H:%M"), notizie=notizie), open(f, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
-    print(f"ultim'ora: {len(notizie)} notizie"); [print(" -", len(n["ar"]), "articoli:", n["t"]) for n in notizie]
-
+    print(f"breaking news: {len(notizie)}"); [print(" -", len(n["ar"]), "articoli, picco", n.get("picco"), ":", n["t"]) for n in notizie]
 
 ITALIANE = {r["sito"] for r in leggi_csv(os.path.join(QUI, "fonti.csv")) if r["edizione"] == "it"}
 
