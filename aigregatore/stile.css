@@ -433,3 +433,13 @@ a.multi{cursor:pointer}
 
 /* «Le più cercate»: solo la nuvoletta gialla (23/11) */
 .cerc .side{grid-column:1 / -1;max-width:640px;padding-top:10px}
+
+/* sviluppi dentro la notizia madre (23/11) */
+.svil{margin:12px 0 4px;padding:10px 14px;background:var(--lime);color:var(--ink);border:1.5px solid var(--ink);border-radius:16px}
+.svl{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;margin:0 0 4px}
+.svil ol{list-style:none;margin:0;padding:0}
+.svil li{padding:6px 0;border-top:1px dashed rgba(21,18,14,.3)}
+.svil li:first-child{border-top:0}
+.svil a{color:var(--ink);text-decoration:none;display:block}
+.svil .at{font-weight:700;display:block}
+.svil .ad{font-family:var(--mono);font-size:11px;opacity:.7}
