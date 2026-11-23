@@ -9,13 +9,13 @@
     function ago(d){var k=TODAY-d;return k===0?'oggi':k===1?'ieri':k+' giorni fa';}
     function week(d){var s='<span class="week" aria-hidden="true">';for(var k=TODAY-7;k<=TODAY;k++)s+='<i'+(k===d?' class="on"':'')+'></i>';return s+'</span>';}
     function srcs(f,n){return f.length<=n+1?f.join(' · '):f.slice(0,n).join(' · ')+' e altre '+(f.length-n);}
-    function a(x){return '<a href="'+esc(x.u)+'" data-p="'+x.p+'" target="_blank" rel="noopener">'+esc(x.t)+'</a>';}
+    function a(x){return '<a href="'+esc(x.u)+'" data-p="'+x.p+'" target="_blank" rel="noopener">'+esc(x.t)+'</a>'+(x.g?'<span class="gr">gratis</span>':'');}
 
     /* a story with several articles opens in place and lists them all */
     function nart(x){return x.ar.length+' articoli di '+x.n+' testate';}
     function listHtml(x){
       return '<ol class="arts">'+x.ar.map(function(r){
-        return '<li><a href="'+esc(r[2])+'" target="_blank" rel="noopener"><span class="af">'+esc(r[0])+'</span><span class="at">'+esc(r[1])+'</span><span class="ad">'+WD[r[3]]+' '+(DN[r[3]]||r[3])+'</span></a></li>';
+        return '<li><a href="'+esc(r[2])+'" target="_blank" rel="noopener"><span class="af">'+esc(r[0])+(r[4]==='L'?' <span class="gr">gratis</span>':'')+'</span><span class="at">'+esc(r[1])+'</span><span class="ad">'+WD[r[3]]+' '+(DN[r[3]]||r[3])+'</span></a></li>';
       }).join('')+'</ol>';
     }
     function decorate(root){

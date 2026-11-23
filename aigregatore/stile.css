@@ -391,3 +391,6 @@ a.multi{cursor:pointer}
 .fgo i{background:var(--ink);color:var(--lime)}
 .back{display:inline-flex;margin-top:22px}
 @media (max-width:1080px){.fpanel .rows{columns:1}}
+
+/* articolo che si legge gratis per intero */
+.gr{display:inline-block;font:500 10px/1 'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;background:#D4F23F;color:#15120E;border:1.5px solid #15120E;border-radius:99px;padding:3px 7px;margin-left:8px;vertical-align:middle;text-decoration:none;white-space:nowrap}
