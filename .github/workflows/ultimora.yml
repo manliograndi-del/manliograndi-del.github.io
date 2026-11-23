@@ -2,7 +2,7 @@ name: AIgregatore breaking news
 # Ogni ora (Manlio, 23/11 17:05; prima ogni 10 minuti) legge i feed delle testate (solo titoli e link) e aggiorna aigregatore/ultimora.json.
 # Nessuna intelligenza artificiale, nessun token. Il programma sta in .github/ultimora/.
 # Il «cron» di GitHub salta spesso le partenze: per questo il lavoro resta acceso quasi 6 ore,
-# controlla ogni ora e prima di chiudersi fa ripartire se stesso. Il cron serve solo da riserva.
+# controlla ogni ora e prima di chiudersi (entro 5 ore e 15, ben prima del limite di 6 ore) fa ripartire se stesso. Il cron serve solo da riserva.
 on:
   schedule:
     - cron: "7 * * * *"
@@ -23,7 +23,7 @@ jobs:
         run: |
           git config user.name manliograndi-del
           git config user.email manliograndi-del@users.noreply.github.com
-          fine=$(( $(date +%s) + 5*3600 + 30*60 ))
+          fine=$(( $(date +%s) + 5*3600 + 15*60 ))
           while [ $(date +%s) -lt $fine ]; do
             inizio=$(date +%s)
             git pull -q --rebase origin main || git rebase --abort || true
@@ -33,7 +33,7 @@ jobs:
               git commit -q -m "AIgregatore: breaking news"
               for i in 1 2 3 4; do git push -q origin HEAD:main && break; sleep $((i*5)); git pull -q --rebase origin main; done
             fi
-            resto=$(( 3600 - ($(date +%s) - inizio) )); [ $resto -gt 0 ] && sleep $resto
+            resto=$(( 3600 - ($(date +%s) - inizio) )); fra=$(( fine - $(date +%s) )); [ $fra -lt $resto ] && resto=$fra; [ $resto -gt 0 ] && sleep $resto || true
           done
       - name: Riparte da solo
         if: always()
