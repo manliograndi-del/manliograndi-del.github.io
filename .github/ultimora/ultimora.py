@@ -117,6 +117,15 @@ def cerca(arts, sito_json, ora):
     return out[:MAX_NOTIZIE]
 
 
+def recenti(art, acc):  # articoli dal più recente, senza doppioni (stessa testata e stesso titolo)
+    visti, out = set(), []
+    for a in sorted(art, key=lambda a: a["data"], reverse=True):
+        k = (a["sito"], a["titolo"].strip().lower())
+        if k in visti: continue
+        visti.add(k); out.append([a["sito"], a["titolo"], a["link"], acc.get(a["sito"]) == "libero", a["data"]])
+    return out
+
+
 def scrivi(gruppi, cartella, ora):
     acc = {r["sito"]: r["accesso"] for r in leggi_csv(os.path.join(QUI, "accesso.csv"))}
     notizie = []
@@ -127,7 +136,7 @@ def scrivi(gruppi, cartella, ora):
         n = g["sito"]  # già nel sito: titolo italiano e articolo principale del sito
         notizie.append(dict(t=n["t"] if n else capo["titolo"], u=n["u"] if n else capo["link"], gratis=bool(n["g"]) if n else acc.get(capo["sito"]) == "libero",
                             it=bool(n) or capo["sito"] in ITALIANE, primo=g["art"][0]["data"], n2=len(g["siti2"]), n6=len(g["siti"]),
-                            ar=[[a["sito"], a["titolo"], a["link"], acc.get(a["sito"]) == "libero"] for a in g["art"]]))
+                            ar=recenti(g["art"], acc)))
     f = os.path.join(cartella, "ultimora.json")  # si riscrive a ogni controllo: l'ora dice alla pagina «aggiornato alle»
     json.dump(dict(ora=ora.strftime("%Y-%m-%d %H:%M"), notizie=notizie), open(f, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
     print(f"ultim'ora: {len(notizie)} notizie"); [print(" -", len(n["ar"]), "articoli:", n["t"]) for n in notizie]

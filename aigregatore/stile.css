@@ -443,3 +443,14 @@ a.multi{cursor:pointer}
 .svil a{color:var(--ink);text-decoration:none;display:block}
 .svil .at{font-weight:700;display:block}
 .svil .ad{font-family:var(--mono);font-size:11px;opacity:.7}
+
+/* Breaking News: il titolo apre l'elenco degli articoli (23/11) */
+.uo-t{all:unset;cursor:pointer;font-weight:700;font-size:17px;line-height:1.3;display:block}
+.uo-t::after{content:" ▾";font-size:13px}
+.uo li.open>.uo-t::after{content:" ▴"}
+.uo .uo-arts{list-style:none;margin:8px 0 0;padding:10px 12px;background:var(--cream);border:1.5px solid var(--ink);border-radius:14px}
+.uo-arts li{padding:6px 0;border-top:1px dashed rgba(21,18,14,.25)}
+.uo-arts li:first-child{border-top:0}
+.uo-arts a{display:block;color:var(--ink);text-decoration:none}
+.uo-arts .af{display:block;font-family:var(--mono);font-size:11px;opacity:.75}
+.uo-arts .at{display:block;font-weight:600;font-size:14.5px}
