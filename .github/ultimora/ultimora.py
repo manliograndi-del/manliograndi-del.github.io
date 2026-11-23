@@ -17,7 +17,10 @@ from email.utils import parsedate_to_datetime
 
 QUI = os.path.dirname(os.path.abspath(__file__))
 UA = {"User-Agent": "AIgregatore/0.1 (lettore di feed RSS; solo titoli e link)"}
-ORE, MIN_TESTATE, MAX_NOTIZIE = 3, 3, 4
+ORE, MAX_NOTIZIE = 6, 4
+# «ultim'ora» = notizia che corre: almeno 3 testate nelle ultime 2 ore, oppure almeno 5 nelle ultime 6 (Manlio, 23/11:
+# conta il ritmo con cui la riprendono, anche se la notizia è già nel sito)
+(ORE_RAPIDA, MIN_RAPIDA), MIN_LARGA = (2, 3), 5
 AI = re.compile(r"\b(ai|ia|a\.i\.|intelligenz[ae] artificial[ei]|artificial intelligence|gpt[-\w.]*|chatgpt|openai|claude|anthropic|gemini|llm|llms|agent[ei]?|agents|agentic|copilot|deepseek|llama|mistral|grok|xai|qwen|kimi|chatbot|chatbots|machine learning|deep learning|neural|nvidia|perplexity|midjourney|sora|notebooklm|hugging ?face|agi|superintelligen\w*|deepmind|altman|amodei|hassabis|data ?cent(?:er|re)s?|chip|chips|robot\w*)\b", re.I)
 # parole troppo comuni per dire «stesso fatto» (inglese e italiano)
 VUOTE = set("""the a an and or of to in on for with by from at as is are was were be been its it this that these those new
@@ -69,11 +72,14 @@ def parole(t):
 
 def cerca(arts, sito_json, ora):
     dati = json.load(open(sito_json, encoding="utf-8")) if os.path.exists(sito_json) else {"news": []}
-    sul_sito = {a[2] for n in dati["news"] for a in n.get("ar", [])} | {n.get("u") for n in dati["news"]}
+    sul_sito = {}  # link -> notizia del sito (per usare il suo titolo italiano)
+    for n in dati["news"]:
+        for a in n.get("ar", []): sul_sito[a[2]] = n
+        sul_sito.setdefault(n.get("u"), n)
     inizio = (ora - dt.timedelta(hours=ORE)).strftime("%Y-%m-%d %H:%M"); fine = (ora + dt.timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M")
     visti, R = set(), []
     for a in sorted(arts, key=lambda a: a["data"]):
-        if not a["data"] or not (inizio <= a["data"] <= fine) or a["link"] in visti or a["link"] in sul_sito: continue
+        if not a["data"] or not (inizio <= a["data"] <= fine) or a["link"] in visti: continue
         visti.add(a["link"]); a["p"] = parole(a["titolo"]); R.append(a)
     # quanto è rara una parola: conta fra i titoli nuovi della finestra
     df = {}
@@ -94,14 +100,20 @@ def cerca(arts, sito_json, ora):
             for x in best["art"]:
                 for w in rare(x["p"]): conta[w] = conta.get(w, 0) + 1
             best["nucleo"] = {w for w, c in conta.items() if c >= 2} or best["nucleo"]
-    out = []
+    out, da = [], (ora - dt.timedelta(hours=ORE_RAPIDA)).strftime("%Y-%m-%d %H:%M")
     for g in gruppi:
-        siti = []
+        siti, siti2 = [], []
         for a in g["art"]:
             if a["sito"] not in siti: siti.append(a["sito"])
-        if len(siti) < MIN_TESTATE: continue
-        out.append(dict(siti=siti, art=g["art"]))
-    out.sort(key=lambda g: (-len(g["siti"]), g["art"][0]["data"]))
+            if a["data"] >= da and a["sito"] not in siti2: siti2.append(a["sito"])
+        if len(siti2) < MIN_RAPIDA and len(siti) < MIN_LARGA: continue
+        conta = {}
+        for a in g["art"]:
+            n = sul_sito.get(a["link"])
+            if n: conta[id(n)] = (conta.get(id(n), (0, n))[0] + 1, n)
+        nota = max(conta.values(), key=lambda x: x[0])[1] if conta else None
+        out.append(dict(siti=siti, siti2=siti2, art=g["art"], sito=nota))
+    out.sort(key=lambda g: (-len(g["siti2"]), -len(g["siti"]), g["art"][0]["data"]))
     return out[:MAX_NOTIZIE]
 
 
@@ -112,7 +124,9 @@ def scrivi(gruppi, cartella, ora):
         lib = [a for a in g["art"] if acc.get(a["sito"]) == "libero"]
         it = [a for a in g["art"] if a["sito"] in ITALIANE]
         capo = ([a for a in it if a in lib] or it or lib or g["art"])[0]  # meglio un titolo italiano, meglio se gratis
-        notizie.append(dict(t=capo["titolo"], u=capo["link"], gratis=acc.get(capo["sito"]) == "libero", primo=g["art"][0]["data"],
+        n = g["sito"]  # già nel sito: titolo italiano e articolo principale del sito
+        notizie.append(dict(t=n["t"] if n else capo["titolo"], u=n["u"] if n else capo["link"], gratis=bool(n["g"]) if n else acc.get(capo["sito"]) == "libero",
+                            it=bool(n) or capo["sito"] in ITALIANE, primo=g["art"][0]["data"], n2=len(g["siti2"]), n6=len(g["siti"]),
                             ar=[[a["sito"], a["titolo"], a["link"], acc.get(a["sito"]) == "libero"] for a in g["art"]]))
     f = os.path.join(cartella, "ultimora.json")  # si riscrive a ogni controllo: l'ora dice alla pagina «aggiornato alle»
     json.dump(dict(ora=ora.strftime("%Y-%m-%d %H:%M"), notizie=notizie), open(f, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
@@ -127,7 +141,7 @@ if __name__ == "__main__":
         k = sys.argv.index("--prova"); ora = dt.datetime.strptime(sys.argv[k + 1], "%Y-%m-%d-%H:%M")
         arts = [r for f in sys.argv[k + 2:] for r in leggi_csv(f)]
         for g in cerca(arts, os.path.join(cartella, "dati.json"), ora):
-            print(len(g["siti"]), "testate:", " | ".join(f"{a['sito']}: {a['titolo'][:70]} [{a['data'][11:]}]" for a in g["art"]))
+            print(len(g["siti2"]), "in 2 ore,", len(g["siti"]), "in 6 ore", "(nel sito: " + g["sito"]["t"][:50] + ")" if g["sito"] else "", "|", " | ".join(f"{a['sito']}: {a['titolo'][:70]} [{a['data'][11:]}]" for a in g["art"]))
         sys.exit()
     ora = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)
     with ThreadPoolExecutor(8) as ex: arts = [a for r in ex.map(una_fonte, leggi_csv(os.path.join(QUI, "fonti.csv"))) for a in r]
