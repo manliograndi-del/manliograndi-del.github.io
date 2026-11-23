@@ -17,7 +17,7 @@ from email.utils import parsedate_to_datetime
 
 QUI = os.path.dirname(os.path.abspath(__file__))
 UA = {"User-Agent": "AIgregatore/0.1 (lettore di feed RSS; solo titoli e link)"}
-ORE, MAX_NOTIZIE = 6, 4
+ORE, MAX_NOTIZIE = 6, 1  # Manlio: una notizia sola
 # «ultim'ora» = notizia che corre: almeno 3 testate nelle ultime 2 ore, oppure almeno 5 nelle ultime 6 (Manlio, 23/11:
 # conta il ritmo con cui la riprendono, anche se la notizia è già nel sito)
 (ORE_RAPIDA, MIN_RAPIDA), MIN_LARGA = (2, 3), 5
