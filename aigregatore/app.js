@@ -150,7 +150,7 @@
   var el=document.getElementById('dati');
   if(el) start(JSON.parse(el.textContent));
   else if(window.fetch) fetch('dati.json').then(function(r){return r.json();}).then(start).catch(function(){});
-  /* ultim'ora: controllata ogni 10 minuti da un programma a parte (ultimora.json) */
+  /* ultim'ora: controllata ogni ora da un programma a parte (ultimora.json) */
   function uo(U){
     var hm=function(t){try{return new Date(t.replace(' ','T')+':00Z').toLocaleTimeString('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'});}catch(e){return '';}};
     var o=document.getElementById('agg-ora'); if(o&&U.ora&&U.ora>(o.getAttribute('data-t')||'')){ o.textContent=hm(U.ora);
@@ -161,7 +161,7 @@
       var f=[];n.ar.forEach(function(a){if(f.indexOf(a[0])<0)f.push(a[0]);});
       return '<li><a href="'+E(n.u)+'" target="_blank" rel="noopener">'+E(n.t)+'</a>'+(n.gratis?'<span class="gr">gratis</span>':'')+
         '<span class="uo-f">'+(n.n2>=3?n.n2+' testate nelle ultime 2 ore':n.n6+' testate nelle ultime 6 ore')+' · '+E(f.join(' · '))+'</span></li>';
-    }).join('')+'</ol><p class="uo-nota">Le notizie che le testate stanno riprendendo in questo momento. Si controlla ogni 10 minuti.</p></section>';
+    }).join('')+'</ol><p class="uo-nota">Le notizie che le testate stanno riprendendo in questo momento. Si controlla ogni ora.</p></section>';
     top.insertAdjacentHTML('afterend',h);
   }
   if(window.fetch) fetch('ultimora.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(U){if(U)uo(U);}).catch(function(){});

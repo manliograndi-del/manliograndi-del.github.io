@@ -430,3 +430,6 @@ a.multi{cursor:pointer}
 @media (min-width:701px){.nastro{gap:14px}.nastro .scorri a{padding:8px 9px;font-size:12px}.nastro .as{font-size:15.5px!important;padding:8px 8px!important}.nastro .sep{margin:0 6px}}
 .nastro .as[aria-pressed="true"]{background:var(--lime);color:var(--ink)}
 @media (max-width:700px){.nastro{height:50px;gap:8px}.nastro .logo .w{display:none}.nastro .scorri{gap:0}.nastro .scorri a{font-size:11px;padding:7px 6px;letter-spacing:.04em}.nastro .sep{margin:0 6px}}
+
+/* «Le più cercate»: solo la nuvoletta gialla (23/11) */
+.cerc .side{grid-column:1 / -1;max-width:640px;padding-top:10px}
