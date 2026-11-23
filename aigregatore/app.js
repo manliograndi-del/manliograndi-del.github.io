@@ -141,7 +141,7 @@
         else show(p.getAttribute('data-fk'),p.getAttribute('data-fv'),p.getAttribute('data-fl'));
       });
     });
-    [].slice.call(document.querySelectorAll('.links a[href^="#"]')).forEach(function(l){
+    [].slice.call(document.querySelectorAll('.nastro a[data-s]')).forEach(function(l){
       l.addEventListener('click',function(){ if(home.hidden) clear(false); });
     });
     var m=/^#([ac])=([a-z0-9-]+)$/.exec(location.hash||'');
@@ -155,7 +155,7 @@
     var hm=function(t){try{return new Date(t.replace(' ','T')+':00Z').toLocaleTimeString('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'});}catch(e){return '';}};
     var o=document.getElementById('agg-ora'); if(o&&U.ora&&U.ora>(o.getAttribute('data-t')||'')){ o.textContent=hm(U.ora);
       var gg=document.getElementById('agg-giorno'); try{ if(gg) gg.textContent=new Date(U.ora.replace(' ','T')+':00Z').toLocaleDateString('it-IT',{timeZone:'Europe/Rome',weekday:'long'}); }catch(e){} }
-    var home=document.getElementById('home'), top=document.querySelector('nav.top'); if(!home||!top||!U.notizie||!U.notizie.length) return;
+    var home=document.getElementById('home'), top=document.querySelector('.eds'); if(!home||!top||!U.notizie||!U.notizie.length) return;
     var E=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
     var h='<section class="uo" aria-label="Breaking News"><p class="uo-lab"><i></i>Breaking News</p><ol>'+U.notizie.map(function(n){
       var f=[];n.ar.forEach(function(a){if(f.indexOf(a[0])<0)f.push(a[0]);});
@@ -165,4 +165,8 @@
     top.insertAdjacentHTML('afterend',h);
   }
   if(window.fetch) fetch('ultimora.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(U){if(U)uo(U);}).catch(function(){});
+  /* menù: si accende la sezione in cui ti trovi */
+  (function(){var ls=[].slice.call(document.querySelectorAll('.nastro a[data-s]'));if(!ls.length||!('IntersectionObserver' in window))return;
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)ls.forEach(function(a){a.classList.toggle('on',a.getAttribute('data-s')===e.target.id);});});},{rootMargin:'-40% 0px -55% 0px'});
+    ls.forEach(function(a){var x=document.getElementById(a.getAttribute('data-s'));if(x)io.observe(x);});})();
 })();
