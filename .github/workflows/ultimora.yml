@@ -1,29 +1,42 @@
-name: AIgregatore ultim'ora
-# Ogni 10 minuti: legge i feed delle testate (solo titoli e link) e aggiorna aigregatore/ultimora.json.
+name: AIgregatore breaking news
+# Ogni 10 minuti legge i feed delle testate (solo titoli e link) e aggiorna aigregatore/ultimora.json.
 # Nessuna intelligenza artificiale, nessun token. Il programma sta in .github/ultimora/.
+# Il «cron» di GitHub salta spesso le partenze: per questo il lavoro resta acceso quasi 6 ore,
+# controlla ogni 10 minuti e prima di chiudersi fa ripartire se stesso. Il cron serve solo da riserva.
 on:
   schedule:
-    - cron: "3,13,23,33,43,53 * * * *"
+    - cron: "7 * * * *"
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: ultimora
   cancel-in-progress: false
 jobs:
   controlla:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v4
-      - name: Controlla le testate
-        run: python3 .github/ultimora/ultimora.py aigregatore
-      - name: Pubblica
+      - name: Controlla ogni 10 minuti per circa 5 ore e mezza
         run: |
           git config user.name manliograndi-del
           git config user.email manliograndi-del@users.noreply.github.com
-          git add aigregatore/ultimora.json
-          git diff --cached --quiet && exit 0
-          git commit -q -m "AIgregatore: ultim'ora"
-          for i in 1 2 3 4; do git push origin HEAD:main && exit 0; sleep $((i*5)); git pull -q --rebase origin main; done
-          exit 1
+          fine=$(( $(date +%s) + 5*3600 + 30*60 ))
+          while [ $(date +%s) -lt $fine ]; do
+            inizio=$(date +%s)
+            git pull -q --rebase origin main || git rebase --abort || true
+            python3 .github/ultimora/ultimora.py aigregatore || true
+            git add aigregatore/ultimora.json
+            if ! git diff --cached --quiet; then
+              git commit -q -m "AIgregatore: breaking news"
+              for i in 1 2 3 4; do git push -q origin HEAD:main && break; sleep $((i*5)); git pull -q --rebase origin main; done
+            fi
+            resto=$(( 600 - ($(date +%s) - inizio) )); [ $resto -gt 0 ] && sleep $resto
+          done
+      - name: Riparte da solo
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ultimora.yml --ref main
