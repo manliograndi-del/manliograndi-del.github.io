@@ -7,7 +7,7 @@
     function word(n){return n+(n===1?' notizia':' notizie');}
     function leaf(d,sm){return '<span class="leaf'+(sm?' sm':'')+'"><b>'+WD[d]+'</b><i>'+(DN[d]||d)+'</i></span>';}
     function ago(d){var k=TODAY-d;return k===0?'oggi':k===1?'ieri':k+' giorni fa';}
-    function week(d){var s='<span class="week" aria-hidden="true">';for(var k=TODAY-7;k<=TODAY;k++)s+='<i'+(k===d?' class="on"':'')+'></i>';return s+'</span>';}
+    function week(d){var s='<span class="week" aria-hidden="true">';for(var k=TODAY-6;k<=TODAY;k++)s+='<i'+(k===d?' class="on"':'')+'></i>';return s+'</span>';}
     function srcs(f,n){return f.length<=n+1?f.join(' · '):f.slice(0,n).join(' · ')+' e altre '+(f.length-n);}
     function a(x){return '<a href="'+esc(x.u)+'" data-p="'+x.p+'" target="_blank" rel="noopener">'+esc(x.t)+'</a>'+(x.g?'<span class="gr">gratis</span>':'');}
 
@@ -150,4 +150,18 @@
   var el=document.getElementById('dati');
   if(el) start(JSON.parse(el.textContent));
   else if(window.fetch) fetch('dati.json').then(function(r){return r.json();}).then(start).catch(function(){});
+  /* ultim'ora: controllata ogni 10 minuti da un programma a parte (ultimora.json) */
+  function uo(U){
+    var hm=function(t){try{return new Date(t.replace(' ','T')+':00Z').toLocaleTimeString('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'});}catch(e){return '';}};
+    var o=document.getElementById('agg-ora'); if(o&&U.ora&&U.ora>(o.getAttribute('data-t')||'')) o.textContent=hm(U.ora);
+    var home=document.getElementById('home'), top=document.querySelector('nav.top'); if(!home||!top||!U.notizie||!U.notizie.length) return;
+    var E=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+    var h='<section class="uo" aria-label="Ultim’ora"><p class="uo-lab"><i></i>Ultim’ora</p><ol>'+U.notizie.map(function(n){
+      var f=[];n.ar.forEach(function(a){if(f.indexOf(a[0])<0)f.push(a[0]);});
+      return '<li><a href="'+E(n.u)+'" target="_blank" rel="noopener">'+E(n.t)+'</a>'+(n.gratis?'<span class="gr">gratis</span>':'')+
+        '<span class="uo-f">'+f.length+' testate dalle '+hm(n.primo)+' · '+E(f.join(' · '))+'</span></li>';
+    }).join('')+'</ol><p class="uo-nota">Appena uscite, col titolo originale: entro poche ore le trovi qui sotto in italiano.</p></section>';
+    top.insertAdjacentHTML('afterend',h);
+  }
+  if(window.fetch) fetch('ultimora.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(U){if(U)uo(U);}).catch(function(){});
 })();

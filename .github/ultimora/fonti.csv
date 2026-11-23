@@ -1,0 +1,39 @@
+sito,tipo,indirizzo,edizione,filtro
+The Register,feed,https://www.theregister.com/software/ai_ml/headlines.atom,us,no
+MIT Technology Review,feed,https://www.technologyreview.com/topic/artificial-intelligence/feed,us,no
+Ars Technica,feed,https://arstechnica.com/ai/feed/,us,no
+The Verge,feed,https://www.theverge.com/rss/ai-artificial-intelligence/index.xml,us,no
+TechCrunch,feed,https://techcrunch.com/category/artificial-intelligence/feed/,us,no
+Wired,feed,https://www.wired.com/feed/tag/ai/latest/rss,us,no
+VentureBeat,feed,https://venturebeat.com/category/ai/feed/,us,no
+Financial Times,feed,https://www.ft.com/artificial-intelligence?format=rss,us,no
+Bloomberg,feed,https://feeds.bloomberg.com/technology/news.rss,us,sì
+The Guardian,feed,https://www.theguardian.com/technology/artificialintelligenceai/rss,us,no
+BBC News,feed,https://feeds.bbci.co.uk/news/technology/rss.xml,us,sì
+The Information,feed,https://www.theinformation.com/feed,us,sì
+IEEE Spectrum,feed,https://spectrum.ieee.org/feeds/topic/artificial-intelligence.rss,us,no
+ZDNET,feed,https://www.zdnet.com/topic/artificial-intelligence/rss.xml,us,no
+404 Media,feed,https://www.404media.co/rss/,us,sì
+The Decoder,feed,https://the-decoder.com/feed/,us,no
+AI News,feed,https://www.artificialintelligence-news.com/feed/,us,no
+SiliconANGLE,feed,https://siliconangle.com/category/ai/feed/,us,no
+MarkTechPost,feed,https://www.marktechpost.com/feed/,us,sì
+Analytics Insight,feed,https://www.analyticsinsight.net/feed,us,sì
+The Rundown AI,feed,https://rss.beehiiv.com/feeds/2R3C6Bt5wj.xml,us,no
+The Neuron,feed,https://rss.beehiiv.com/feeds/N4eCstxvgX.xml,us,no
+Wall Street Journal,feed,https://feeds.content.dowjones.io/public/rss/RSSWSJD,us,sì
+New York Times,feed,https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml,us,sì
+Washington Post,feed,https://feeds.washingtonpost.com/rss/business/technology,us,sì
+Reuters,gnews,reuters.com,us,sì
+Axios,gnews,axios.com,us,sì
+CNBC,gnews,cnbc.com,us,sì
+ANSA,feed,https://www.ansa.it/canale_tecnologia/notizie/tecnologia_rss.xml,it,sì
+Il Sole 24 Ore,feed,https://www.ilsole24ore.com/rss/tecnologia.xml,it,sì
+la Repubblica,feed,https://www.repubblica.it/rss/tecnologia/rss2.0.xml,it,sì
+Corriere della Sera,gnews,corriere.it,it,sì
+Wired Italia,feed,https://www.wired.it/feed/rss,it,sì
+Il Post,feed,https://www.ilpost.it/tecnologia/feed/,it,sì
+AI4Business,feed,https://www.ai4business.it/feed/,it,no
+Agenda Digitale,feed,https://www.agendadigitale.eu/feed/,it,sì
+HDblog,feed,https://www.hdblog.it/feed/,it,sì
+DDay.it,feed,https://www.dday.it/rss,it,sì
