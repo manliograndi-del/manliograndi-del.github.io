@@ -160,7 +160,7 @@
     var h='<section class="uo" aria-label="Breaking News"><p class="uo-lab"><i></i>Breaking News</p><ol>'+U.notizie.map(function(n){
       var f=[];n.ar.forEach(function(a){if(f.indexOf(a[0])<0)f.push(a[0]);});
       return '<li><a href="'+E(n.u)+'" target="_blank" rel="noopener">'+E(n.t)+'</a>'+(n.gratis?'<span class="gr">gratis</span>':'')+
-        '<span class="uo-f">'+(n.n2>=3?n.n2+' testate nelle ultime 2 ore':n.n6+' testate nelle ultime 6 ore')+(n.it?'':' · titolo originale')+' · '+E(f.join(' · '))+'</span></li>';
+        '<span class="uo-f">'+(n.n2>=3?n.n2+' testate nelle ultime 2 ore':n.n6+' testate nelle ultime 6 ore')+' · '+E(f.join(' · '))+'</span></li>';
     }).join('')+'</ol><p class="uo-nota">Le notizie che le testate stanno riprendendo in questo momento. Si controlla ogni 10 minuti.</p></section>';
     top.insertAdjacentHTML('afterend',h);
   }
