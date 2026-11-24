@@ -454,3 +454,12 @@ a.multi{cursor:pointer}
 .uo-arts a{display:block;color:var(--ink);text-decoration:none}
 .uo-arts .af{display:block;font-family:var(--mono);font-size:11px;opacity:.75}
 .uo-arts .at{display:block;font-weight:600;font-size:14.5px}
+
+/* pagine del giorno (24/11): frecce e calendario per scegliere il giorno */
+.giorni{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px auto 0}
+.giorni .gfr{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:99px;padding:8px 16px;box-shadow:3px 3px 0 var(--ink)}
+.giorni a.gfr:hover{background:var(--lime)}
+.giorni .gfr.off{opacity:.3;box-shadow:none}
+.gcal{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--cream);border-radius:99px;padding:5px 8px 5px 14px;font-size:16px;cursor:pointer}
+.gcal input{font-family:var(--mono);font-size:13px;border:0;border-radius:99px;padding:6px 10px;background:var(--cream);color:var(--ink);cursor:pointer}
+@media (max-width:480px){.giorni{gap:6px}.giorni .gfr{padding:7px 11px;font-size:11.5px}.gcal input{font-size:12px;padding:5px 6px}}

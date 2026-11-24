@@ -1,12 +1,13 @@
 (function(){
   function start(D){
-    var N=D.news, CATS=D.cats, WD=D.wd, DN=D.dn||{}, TODAY=D.today;
+    var N=D.news, CATS=D.cats, WD=D.wd, DN=D.dn||{}, TODAY=D.today, GG=!!D.giorno, CH=!!D.chiuso;
+    var PER=GG?'quel giorno':'nella settimana', BACK=GG?'× torna a tutto il giorno':'× torna a tutta la settimana';
     var vista=document.getElementById('vista'), home=document.getElementById('home');
     var BYP={}; N.forEach(function(x){BYP[x.p]=x;});
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     function word(n){return n+(n===1?' notizia':' notizie');}
     function leaf(d,sm){return '<span class="leaf'+(sm?' sm':'')+'"><b>'+WD[d]+'</b><i>'+(DN[d]||d)+'</i></span>';}
-    function ago(d){var k=TODAY-d;return k===0?'oggi':k===1?'ieri':k+' giorni fa';}
+    function ago(d){var k=TODAY-d;if(CH)return k===0?'quel giorno':k===1?'il giorno prima':k+' giorni prima';return k===0?'oggi':k===1?'ieri':k+' giorni fa';}
     function week(d){var s='<span class="week" aria-hidden="true">';for(var k=TODAY-6;k<=TODAY;k++)s+='<i'+(k===d?' class="on"':'')+'></i>';return s+'</span>';}
     function srcs(f,n){return f.length<=n+1?f.join(' · '):f.slice(0,n).join(' · ')+' e altre '+(f.length-n);}
     function a(x){return '<a href="'+esc(x.u)+'" data-p="'+x.p+'" target="_blank" rel="noopener">'+esc(x.t)+'</a>'+(x.g?'<span class="gr">gratis</span>':'');}
@@ -75,7 +76,7 @@
         if(u){try{site=new URL(u).origin;}catch(e){} } return !!site;
       });
       var h='<div class="fpanel"><div class="fhead"><h3>'+esc(label)+'</h3><button type="button" class="fclose">× chiudi</button></div>'+
-        '<div class="fnums"><span><b>'+L.length+'</b>'+(L.length===1?'notizia':'notizie')+' nella settimana</span><span><b>'+sh.length+'</b>date anche da altre testate</span><span><b>'+solo.length+'</b>date solo da lei</span></div>'+
+        '<div class="fnums"><span><b>'+L.length+'</b>'+(L.length===1?'notizia':'notizie')+' '+PER+'</span><span><b>'+sh.length+'</b>date anche da altre testate</span><span><b>'+solo.length+'</b>date solo da lei</span></div>'+
         '<ol class="rows">'+show.map(function(x){
           return '<li>'+leaf(x.d,true)+'<div>'+a(x)+'<span class="src">'+(x.n>1?'<b>'+x.n+' testate</b> · ':'')+CATS[x.c]+'</span></div></li>';
         }).join('')+'</ol>'+
@@ -114,7 +115,7 @@
     function pick(kind,key){
       var L=N.filter(function(x){return kind==='c'?x.c===key:x.a.indexOf(key)>-1;});
       L.sort(function(p,q){return q.n-p.n||q.j-p.j||q.d-p.d||p.p-q.p;});
-      var B=L.filter(function(x){return x.n>=3;}).slice(0,5);
+      var cnt={},B=L.filter(function(x){if(x.n<3)return false;if(x.v){cnt[x.v]=(cnt[x.v]||0)+1;if(cnt[x.v]>2)return false;}return true;}).slice(0,5); /* al massimo 2 della stessa vicenda (24/11) */
       if(!B.length) B=L.slice(0,L.length>=8?2:1);
       var R=L.filter(function(x){return B.indexOf(x)<0;});
       return {all:L,big:B,mid:R.filter(function(x){return x.n>=2;}),rest:R.filter(function(x){return x.n<2;}).sort(function(p,q){return q.d-p.d||p.p-q.p;})};
@@ -122,10 +123,10 @@
     function title(l){var i=l.lastIndexOf(' ');return i<0?'<em>'+esc(l)+'</em>':esc(l.slice(0,i))+' <em>'+esc(l.slice(i+1))+'</em>';}
     function show(kind,key,label){
       var S=pick(kind,key), k=S.big.length, h='';
-      h+='<header class="sec"><p class="lab"><span class="pill">★</span> '+word(S.all.length)+' nella settimana</p><h2>'+title(label)+'</h2>'+
-         '<button id="vreset" type="button">× torna a tutta la settimana</button></header>';
+      h+='<header class="sec"><p class="lab"><span class="pill">★</span> '+word(S.all.length)+' '+PER+'</p><h2>'+title(label)+'</h2>'+
+         '<button id="vreset" type="button">'+BACK+'</button></header>';
       h+='<div class="g12 mosaic vtop">'+S.big.map(function(x,i){return big(x,i,k);}).join('')+
-         (k===1?'<div class="vstat" style="--r:5deg"><b>'+S.all.length+'</b><span>'+(S.all.length===1?'notizia':'notizie')+'<br>nella settimana</span></div>':'')+'</div>';
+         (k===1?'<div class="vstat" style="--r:5deg"><b>'+S.all.length+'</b><span>'+(S.all.length===1?'notizia':'notizie')+'<br>'+PER+'</span></div>':'')+'</div>';
       if(S.mid.length) h+='<div class="vmid">'+S.mid.map(mid).join('')+'</div>';
       if(S.rest.length) h+='<ol class="vrest">'+S.rest.map(row).join('')+'</ol>';
       vista.innerHTML=h; vista.hidden=false; home.hidden=true; decorate(vista);
@@ -155,7 +156,7 @@
   }
   var el=document.getElementById('dati');
   if(el) start(JSON.parse(el.textContent));
-  else if(window.fetch) fetch('dati.json').then(function(r){return r.json();}).then(start).catch(function(){});
+  else if(window.fetch) fetch(document.body.getAttribute('data-dati')||'dati.json').then(function(r){return r.json();}).then(start).catch(function(){});
   /* ultim'ora: controllata ogni ora da un programma a parte (ultimora.json) */
   function uo(U){
     var hm=function(t){try{return new Date(t.replace(' ','T')+':00Z').toLocaleTimeString('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'});}catch(e){return '';}};
@@ -179,9 +180,18 @@
       });
     });
   }
-  if(window.fetch) fetch('ultimora.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(U){if(U)uo(U);}).catch(function(){});
+  if(window.fetch&&!document.body.hasAttribute('data-giorno')) fetch('ultimora.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(U){if(U)uo(U);}).catch(function(){});
   /* menù: si accende la sezione in cui ti trovi */
   (function(){var ls=[].slice.call(document.querySelectorAll('.nastro a[data-s]'));if(!ls.length||!('IntersectionObserver' in window))return;
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)ls.forEach(function(a){a.classList.toggle('on',a.getAttribute('data-s')===e.target.id);});});},{rootMargin:'-40% 0px -55% 0px'});
     ls.forEach(function(a){var x=document.getElementById(a.getAttribute('data-s'));if(x)io.observe(x);});})();
+  /* pagine del giorno (24/11): il calendario porta al giorno scelto; la freccia «dopo» si accende quando il giorno dopo esiste */
+  (function(){var c=document.getElementById('scegli-giorno');if(!c)return;
+    c.addEventListener('change',function(){if(/^\d{4}-\d\d-\d\d$/.test(c.value)&&c.value!==document.body.getAttribute('data-giorno'))location.href='giorno-'+c.value+'.html';});
+    if(window.fetch) fetch('giorni.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(G){
+      if(!G||!G.giorni||!G.giorni.length)return; c.min=G.giorni[0]; c.max=G.giorni[G.giorni.length-1];
+      var x=document.getElementById('g-dopo'); if(x&&G.giorni.indexOf(x.getAttribute('data-href').slice(7,17))>-1){
+        var a=document.createElement('a');a.className='gfr';a.href=x.getAttribute('data-href');a.textContent=x.getAttribute('data-l');a.title='Il giorno dopo';x.parentNode.replaceChild(a,x);}
+    }).catch(function(){});
+  })();
 })();
