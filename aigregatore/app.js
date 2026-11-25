@@ -112,8 +112,13 @@
         '<h3>'+a(x)+'</h3><p class="src">'+esc(srcs(x.f,3))+'</p></article>';
     }
     function row(x){return '<li class="ar vr">'+leaf(x.d,true)+'<div>'+a(x)+'<span class="src"><i class="dot c-'+x.c+'"></i>'+CATS[x.c]+' · '+esc(x.f[0])+'</span></div></li>';}
+    /* filtro del giorno (25/11, Manlio): G = giorno scelto (numero), le notizie con almeno un articolo uscito quel giorno,
+       contate con le testate di quel giorno; si somma al filtro per azienda o tema (F) */
+    var G=null, F=null, GDAY=function(g){return new Date((g-719163)*864e5).toISOString().slice(0,10);};
+    function nGiorno(x){if(!x.ar.length)return x.d===G?x.n:0;var s={},k=0;x.ar.forEach(function(r){if(r[3]===G&&!s[r[0]]){s[r[0]]=1;k++;}});return k;}
+    function base(){if(G===null)return N;var o=[];N.forEach(function(x){var k=nGiorno(x);if(k){var y={};for(var q in x)y[q]=x[q];y.n=k;o.push(y);}});return o;}
     function pick(kind,key){
-      var L=N.filter(function(x){return kind==='c'?x.c===key:x.a.indexOf(key)>-1;});
+      var L=base().filter(function(x){return !kind?true:kind==='c'?x.c===key:x.a.indexOf(key)>-1;});
       L.sort(function(p,q){return q.n-p.n||q.j-p.j||q.d-p.d||p.p-q.p;});
       var cnt={},B=L.filter(function(x){if(x.n<3)return false;if(x.v){cnt[x.v]=(cnt[x.v]||0)+1;if(cnt[x.v]>2)return false;}return true;}).slice(0,5); /* al massimo 2 della stessa vicenda (24/11) */
       if(!B.length) B=L.slice(0,L.length>=8?2:1);
@@ -121,21 +126,36 @@
       return {all:L,big:B,mid:R.filter(function(x){return x.n>=2;}),rest:R.filter(function(x){return x.n<2;}).sort(function(p,q){return q.d-p.d||p.p-q.p;})};
     }
     function title(l){var i=l.lastIndexOf(' ');return i<0?'<em>'+esc(l)+'</em>':esc(l.slice(0,i))+' <em>'+esc(l.slice(i+1))+'</em>';}
-    function show(kind,key,label){
-      var S=pick(kind,key), k=S.big.length, h='';
-      h+='<header class="sec"><p class="lab"><span class="pill">★</span> '+word(S.all.length)+' '+PER+'</p><h2>'+title(label)+'</h2>'+
-         '<button id="vreset" type="button">'+BACK+'</button></header>';
+    function gnome(g){return g===TODAY?'oggi':g===TODAY-1?'ieri':WD[g]+' '+DN[g];}
+    function vediSync(){
+      [].slice.call(document.querySelectorAll('.vedi .vg')).forEach(function(b){var v=b.getAttribute('data-g'),on=G===null?v==='':(v==='oggi'&&G===TODAY);b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});
+      var s=document.getElementById('vedi-giorno'); if(s) s.value=(G!==null&&G!==TODAY)?GDAY(G):'';
+    }
+    function render(scroll){
+      if(G===null&&!F){clear(scroll);return;}
+      if(F) show(F[0],F[1],F[2],scroll); else show('', '', G===TODAY?'Le notizie di oggi':'Le notizie di '+gnome(G),scroll);
+    }
+    function show(kind,key,label,scroll){
+      F=kind?[kind,key,label]:null;
+      var S=pick(kind,key), k=S.big.length, h='', per=G===null?PER:'('+gnome(G)+')';
+      var back=F?(G===null?BACK:'× togli '+label):'× torna a tutte le notizie';
+      h+='<header class="sec"><p class="lab"><span class="pill">★</span> '+word(S.all.length)+' '+per+'</p><h2>'+title(F&&G!==null?label+' · '+gnome(G):label)+'</h2>'+
+         '<button id="vreset" type="button">'+back+'</button></header>';
+      if(!S.all.length) h+='<p class="vvuota">Nessuna notizia '+(G===null?'':gnome(G)==='oggi'||gnome(G)==='ieri'?gnome(G)+' ':'quel giorno ')+'per questa scelta.</p>';
       h+='<div class="g12 mosaic vtop">'+S.big.map(function(x,i){return big(x,i,k);}).join('')+
-         (k===1?'<div class="vstat" style="--r:5deg"><b>'+S.all.length+'</b><span>'+(S.all.length===1?'notizia':'notizie')+'<br>'+PER+'</span></div>':'')+'</div>';
+         (k===1?'<div class="vstat" style="--r:5deg"><b>'+S.all.length+'</b><span>'+(S.all.length===1?'notizia':'notizie')+'<br>'+(G===null?PER:gnome(G))+'</span></div>':'')+'</div>';
       if(S.mid.length) h+='<div class="vmid">'+S.mid.map(mid).join('')+'</div>';
       if(S.rest.length) h+='<ol class="vrest">'+S.rest.map(row).join('')+'</ol>';
       vista.innerHTML=h; vista.hidden=false; home.hidden=true; decorate(vista);
-      document.getElementById('vreset').addEventListener('click',function(){clear(true);});
-      pills.forEach(function(p){p.setAttribute('aria-pressed',String(p.getAttribute('data-fk')===kind&&p.getAttribute('data-fv')===key));});
-      try{history.replaceState(null,'','#'+kind+'='+key);}catch(e){}
-      window.scrollTo(0,Math.max(0,vista.getBoundingClientRect().top+window.pageYOffset-150));
+      document.getElementById('vreset').addEventListener('click',function(){if(F&&G!==null){F=null;render(true);}else clear(true);});
+      pills.forEach(function(p){p.setAttribute('aria-pressed',String(!!kind&&p.getAttribute('data-fk')===kind&&p.getAttribute('data-fv')===key));});
+      var hs=[];if(G!==null)hs.push('g='+(G===TODAY?'oggi':GDAY(G)));if(F)hs.push(kind+'='+key);
+      try{history.replaceState(null,'','#'+hs.join('&'));}catch(e){}
+      vediSync();
+      if(scroll!==false) window.scrollTo(0,Math.max(0,vista.getBoundingClientRect().top+window.pageYOffset-150));
     }
     function clear(scroll){
+      G=null; F=null; vediSync();
       vista.hidden=true; vista.innerHTML=''; home.hidden=false;
       pills.forEach(function(p){p.setAttribute('aria-pressed','false');});
       try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
@@ -144,15 +164,27 @@
     pills.forEach(function(p){
       p.addEventListener('click',function(e){
         e.preventDefault();
-        if(p.getAttribute('aria-pressed')==='true') clear(true);
+        if(p.getAttribute('aria-pressed')==='true'){F=null;render(true);}
         else show(p.getAttribute('data-fk'),p.getAttribute('data-fv'),p.getAttribute('data-fl'));
       });
     });
     [].slice.call(document.querySelectorAll('.nastro a[data-s]')).forEach(function(l){
       l.addEventListener('click',function(){ if(home.hidden) clear(false); });
     });
-    var m=/^#([ac])=([a-z0-9-]+)$/.exec(location.hash||'');
-    if(m){ var p0=document.querySelector('[data-fk="'+m[1]+'"][data-fv="'+m[2]+'"]'); if(p0) show(m[1],m[2],p0.getAttribute('data-fl')); }
+    /* la casella «Tutte / Oggi / Altro giorno» */
+    function scegli(v){
+      if(!v){G=null;} else if(v==='oggi'){G=TODAY;} else {var t=Date.parse(v+'T00:00:00Z');if(isNaN(t))return;G=Math.round(t/864e5)+719163;if(G>TODAY||G<TODAY-6)G=null;}
+      render(true);
+    }
+    if(!GG){
+      [].slice.call(document.querySelectorAll('.vedi .vg')).forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();scegli(b.getAttribute('data-g'));});});
+      var vs=document.getElementById('vedi-giorno'); if(vs) vs.addEventListener('change',function(){scegli(vs.value);});
+    }
+    var hm=(location.hash||'').slice(1).split('&'), hg=null, hf=null;
+    hm.forEach(function(s){var m=/^([gac])=([a-z0-9-]+)$/.exec(s);if(!m)return;if(m[1]==='g')hg=m[2];else hf=m;});
+    if(hg&&!GG){if(hg==='oggi')G=TODAY;else{var t0=Date.parse(hg+'T00:00:00Z');if(!isNaN(t0)){G=Math.round(t0/864e5)+719163;if(G>TODAY||G<TODAY-6)G=null;}}}
+    var p0=hf&&document.querySelector('[data-fk="'+hf[1]+'"][data-fv="'+hf[2]+'"]');
+    if(p0) show(hf[1],hf[2],p0.getAttribute('data-fl')); else if(G!==null) render(true);
   }
   var el=document.getElementById('dati');
   if(el) start(JSON.parse(el.textContent));
@@ -162,6 +194,7 @@
     var hm=function(t){try{return new Date(t.replace(' ','T')+':00Z').toLocaleTimeString('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'});}catch(e){return '';}};
     var o=document.getElementById('agg-ora'); if(o&&U.ora&&U.ora>(o.getAttribute('data-t')||'')){ o.textContent=hm(U.ora);
       var gg=document.getElementById('agg-giorno'); try{ if(gg) gg.textContent=new Date(U.ora.replace(' ','T')+':00Z').toLocaleDateString('it-IT',{timeZone:'Europe/Rome',weekday:'long'}); }catch(e){} }
+    return; /* striscia «Breaking News» tolta il 25/11 (Manlio): resta solo l'ora dell'ultimo controllo */
     var home=document.getElementById('home'), top=document.querySelector('.eds'); if(!home||!top||!U.notizie||!U.notizie.length) return;
     var gg=function(t){try{return new Date(t.replace(' ','T')+':00Z').toLocaleDateString('it-IT',{timeZone:'Europe/Rome',weekday:'long'});}catch(e){return '';}};
     var E=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
@@ -185,6 +218,8 @@
   (function(){var ls=[].slice.call(document.querySelectorAll('.nastro a[data-s]'));if(!ls.length||!('IntersectionObserver' in window))return;
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)ls.forEach(function(a){a.classList.toggle('on',a.getAttribute('data-s')===e.target.id);});});},{rootMargin:'-40% 0px -55% 0px'});
     ls.forEach(function(a){var x=document.getElementById(a.getAttribute('data-s'));if(x)io.observe(x);});})();
+  (function(){var s=document.getElementById('vedi-giorno');if(!s||document.getElementById('home'))return;
+    s.addEventListener('change',function(){location.href='index.html'+(s.value?'#g='+s.value:'');});})();
   /* pagine del giorno (24/11): il calendario porta al giorno scelto; la freccia «dopo» si accende quando il giorno dopo esiste */
   (function(){var c=document.getElementById('scegli-giorno');if(!c)return;
     c.addEventListener('change',function(){if(/^\d{4}-\d\d-\d\d$/.test(c.value)&&c.value!==document.body.getAttribute('data-giorno'))location.href='giorno-'+c.value+'.html';});

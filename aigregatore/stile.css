@@ -463,3 +463,26 @@ a.multi{cursor:pointer}
 .gcal{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--cream);border-radius:99px;padding:5px 8px 5px 14px;font-size:16px;cursor:pointer}
 .gcal input{font-family:var(--mono);font-size:13px;border:0;border-radius:99px;padding:6px 10px;background:var(--cream);color:var(--ink);cursor:pointer}
 @media (max-width:480px){.giorni{gap:6px}.giorni .gfr{padding:7px 11px;font-size:11.5px}.gcal input{font-size:12px;padding:5px 6px}}
+
+/* seconda riga: le aziende (25/11) e casella «Tutte / Oggi / Altro giorno» */
+.ditte{max-width:1360px;margin:0 auto;border-top:1px solid #36312a}
+.ditte .scorri{display:flex;align-items:center;gap:2px;height:34px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);padding-right:24px}
+.ditte .scorri::-webkit-scrollbar{display:none}
+.ditte .as{flex:none;white-space:nowrap;text-decoration:none;color:#d9d2bf;font-family:var(--serif);font-weight:700;font-variation-settings:"SOFT" 100;font-size:14.5px;padding:4px 10px;border-radius:99px}
+.ditte .as:first-child{margin-left:-10px}
+.ditte .as:hover{background:#2c2822;color:var(--cream)}
+.ditte .as[aria-pressed="true"]{background:var(--lime);color:var(--ink)}
+@media (max-width:700px){.ditte .scorri{height:32px}.ditte .as{font-size:14px;padding:4px 8px}.ditte .as:first-child{margin-left:-8px}}
+.vedi{display:inline-flex;align-items:center;background:var(--paper);border:2px solid var(--ink);border-radius:99px;padding:2px;box-shadow:3px 3px 0 var(--ink);transform:rotate(-.6deg);max-width:100%}
+.vedi .vg{font-family:var(--mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:99px;white-space:nowrap}
+.vedi .vg small{font-size:10px;letter-spacing:.03em;opacity:.65;margin-left:3px}
+.vedi .vg.on{background:var(--ink);color:var(--cream)}
+.vedi .vg:not(.on):hover{background:var(--lime)}
+.vedi select{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);background:transparent;border:0;border-radius:99px;padding:6px 8px;cursor:pointer;max-width:12em}
+.vedi select:focus-visible{outline:2px solid var(--ink)}
+.vvuota{font-family:var(--mono);font-size:13px;margin:10px 0 30px}
+@media (max-width:480px){.vedi .vg{font-size:10px;letter-spacing:.02em;padding:6px 8px}.vedi .vg small{display:none}.vedi select{font-size:10px;letter-spacing:0;padding:6px 4px;max-width:10em}}
+/* due pillole su una riga anche sul telefono (25/11) */
+.eds{flex-wrap:nowrap}
+@media (max-width:480px){.eds .ed2{padding:7px 8px;font-size:9.5px}.vedi .vg{padding:6px 7px}.vedi select{max-width:none}}
+@media (max-width:360px){.vedi select{max-width:6.2em}.eds .ed2{font-size:8.5px}}
