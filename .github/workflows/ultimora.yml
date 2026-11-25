@@ -1,6 +1,7 @@
 name: AIgregatore breaking news
 # Ogni ora (Manlio, 23/11 17:05; prima ogni 10 minuti) legge i feed delle testate (solo titoli e link) e aggiorna aigregatore/ultimora.json.
 # Nessuna intelligenza artificiale, nessun token. Il programma sta in .github/ultimora/.
+# Dal 25/11/2026 raccoglie anche cosa cerca la gente nelle ultime ore (Wikipedia ora per ora, suggerimenti di Google): .github/ricerche/.
 # Il «cron» di GitHub salta spesso le partenze: per questo il lavoro resta acceso quasi 6 ore,
 # controlla ogni ora e prima di chiudersi (entro 5 ore e 15, ben prima del limite di 6 ore) fa ripartire se stesso. Il cron serve solo da riserva.
 on:
@@ -28,9 +29,10 @@ jobs:
             inizio=$(date +%s)
             git pull -q --rebase origin main || git rebase --abort || true
             python3 .github/ultimora/ultimora.py aigregatore || true
-            git add aigregatore/ultimora.json
+            timeout 900 python3 .github/ricerche/ricerche_ore.py .github/ricerche || true
+            git add aigregatore/ultimora.json .github/ricerche
             if ! git diff --cached --quiet; then
-              git commit -q -m "AIgregatore: breaking news"
+              git commit -q -m "AIgregatore: breaking news e ricerche delle ultime ore"
               for i in 1 2 3 4; do git push -q origin HEAD:main && break; sleep $((i*5)); git pull -q --rebase origin main; done
             fi
             resto=$(( 3600 - ($(date +%s) - inizio) )); fra=$(( fine - $(date +%s) )); [ $fra -lt $resto ] && resto=$fra; [ $resto -gt 0 ] && sleep $resto || true
