@@ -1,5 +1,5 @@
 {
-"ora": "2026-11-27 20:09",
+"ora": "2026-11-27 21:09",
 "notizie": [
 {
 "t": "OpenAI countersues Apple for stealing trade secrets",
@@ -7,7 +7,7 @@
 "gratis": true,
 "it": false,
 "primo": "2026-11-27 18:20",
-"n2": 6,
+"n2": 2,
 "n6": 6,
 "ar": [
 [
@@ -54,7 +54,7 @@ false,
 ]
 ],
 "picco": 6,
-"picco_ora": "2026-11-27 20:09"
+"picco_ora": "2026-11-27 21:09"
 }
 ]
 }
