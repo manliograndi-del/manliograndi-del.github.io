@@ -1,116 +1,60 @@
 {
-"ora": "2026-11-27 18:54",
+"ora": "2026-11-27 19:54",
 "notizie": [
 {
-"t": "Jensen Huang torna alla guida di Nvidia: il consiglio lo reintegra come CEO",
-"u": "https://www.hdblog.it/nvidia/articoli/n677951/jensen-huang-torna-nvidia-ceo/",
+"t": "OpenAI countersues Apple for stealing trade secrets",
+"u": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOanQycFJEajNxdE50c0xGTkpDeGlsaUFUdDJZaXhWZU1vTEJSRS1Zc1pPZ3RrX19oUFRCMVhPdHkxWF9QYnl3YV9uZExBOExFWXk2SUpzNmFGd01hM3ZMUWNyckhTdzc4d1Rpb2g0NURNZjZMWTAzTlF2QjRCZW1qbzFqbHNnblh6LVFjUjlJdUVVSE5oN3NZcXJmN3FGR0t00gGmAUFVX3lxTE54U0ZaVnhJdGtVLTYwTmxSSzRqY2dRdFRxZE1jc0xYdFVzRWNmMDgxZ2tvSkNzMUI1T2pFaGNEVmxVQXBTTm1YczNKU1hjMG1KTTBmbUM5SjhxMmZ2UVA5SU85NHd6ZGZSQU1Qcl9PelVDNFdNVXVXdlNsdHZkcl9mZkxRVDRIejJlcGtmVENUS2pBVkduZEVHcGJTUkp2M1RKZlJ5R1E?oc=5",
 "gratis": true,
-"it": true,
-"primo": "2026-11-23 14:30",
-"n2": 3,
-"n6": 5,
+"it": false,
+"primo": "2026-11-27 18:20",
+"n2": 6,
+"n6": 6,
 "ar": [
 [
-"CNBC",
-"Nvidia board reinstates Jensen Huang as CEO: Here's what you need to know",
-"https://news.google.com/rss/articles/CBMitAFBVV95cUxNc3drdzYtVGNjcm5LZjhCdzdSREd0Q1FqWFRZU0lSUjBVenpJcFNpRmROTmtiVlp6YWpLeDNVM0ZnelBJV25SLWwzYmJDWVd1dzd5UDZaNU1ScTloMGxKYTVYSnpFWTJuQWpQMWxpZmVpYkxWMTBpb1FWYlEzNEVqV1lfV0xKcEFkUGxpdUVXTjgxTDVsOUNWSWo0c0pQOVBZRmc3NmNJbDJ5MXVGTksta3piRmw?oc=5",
-true,
-"2026-11-23 16:39"
-],
-[
-"Wall Street Journal",
-"Nvidia Board Reinstates Jensen Huang as CEO",
-"https://www.wsj.com/articles/nvidia-board-reinstates-jensen-huang-as-ceo-a6b49914?mod=rss_Technology",
+"The Decoder",
+"OpenAI countersues Apple over trade secret theft and alleged coercion of shared suppliers",
+"https://the-decoder.com/openai-countersues-apple-over-trade-secret-theft-and-alleged-coercion-of-shared-suppliers/",
 false,
-"2026-11-23 16:19"
+"2026-11-27 19:38"
 ],
 [
-"Washington Post",
-"Nvidia board reinstates Jensen Huang after U.S. government input",
-"https://www.washingtonpost.com/technology/2026/11/23/nvidia-board-reinstates-jensen-huang-after-us-government-input/",
+"Reuters",
+"OpenAI countersues Apple for stealing trade secrets",
+"https://news.google.com/rss/articles/CBMiqAFBVV95cUxQa0FibW0xZFFBUlJ2MGJkd0NEcWZtRzkzUkdWcFl1VnlRN2dRMkpjWHpKVXlIekttSno1b1RMeWxJN2dtU0ZlS085Y1ZqTkpfM2Jaci13RUdMNFVPOWtqRldaazVrX25mMExUSkU0SmJRcHJsdnZxMWJXU05MNXFzc211YzlXNzMwRTVUM1k1MW5RQTdHbnRpU1p6Y2hQMFE0UnVBSk45eHg?oc=5",
 false,
-"2026-11-23 15:33"
-],
-[
-"Axios",
-"Nvidia board reinstates Jensen Huang as CEO",
-"https://news.google.com/rss/articles/CBMic0FVX3lxTE1nY19pcE53aXlWQUtPQmRyb2hhWE5CZUxlTHhlbEYxQ2EtQUEtLUFuYjZscTY4bURqLThBT1g5QlB0aThJaTlMZW41aFVHS1pySk9xLUhnQmk5TWdTNzhUQk5Zc3lhSzZINkJpNzdIb0ZPSmc?oc=5",
-true,
-"2026-11-23 14:38"
-],
-[
-"Bloomberg",
-"Nvidia Board Reinstates Jensen Huang as CEO",
-"https://www.bloomberg.com/news/videos/2026-11-23/nvidia-board-reinstates-jensen-huang-as-ceo-video",
-false,
-"2026-11-23 14:30"
+"2026-11-27 19:12"
 ],
 [
 "The Information",
-"Nvidia Reinstates Jensen Huang as CEO",
-"https://www.theinformation.com/briefings/nvidia-reinstates-jensen-huang-ceo",
+"OpenAI Countersues Apple In Trade Secrets Battle",
+"https://www.theinformation.com/briefings/openai-countersues-apple-trade-secrets-battle",
 false,
-"2026-11-23 14:09"
+"2026-11-27 19:06"
 ],
 [
 "Bloomberg",
-"Nvidia Reinstates Jensen Huang as CEO With Government Input",
-"https://www.bloomberg.com/news/articles/2026-11-23/nvidia-reinstates-jensen-huang-as-ceo-with-government-input",
+"OpenAI Says Apple Pressured Suppliers to Shun Its Devices",
+"https://www.bloomberg.com/news/articles/2026-11-27/openai-says-apple-pressured-suppliers-to-shun-its-devices",
 false,
-"2026-11-23 14:08"
+"2026-11-27 19:02"
 ],
 [
 "CNBC",
-"Nvidia reinstates Jensen Huang as CEO",
-"https://news.google.com/rss/articles/CBMibEFVX3lxTE9McnlkOWZjTEROTXNrdGgtS19oWmNzcTFQSFBwUUdmbzBkOVFYQWY4R2JSdloweTM0V0F1a1gyZExpV2ktdC0zcTExdGxlbVgzaFRGTFR0cjViMTZkeTdyQzMtQ0JYMmJPQUNReNIBckFVX3lxTE00WXNRTHAtbXVYeEpKUVFhaExjRzNtSVg4VWphUk04cWIxOUpRY0VQeWNtdHdCT0Y4dXRZc3pqbDRQWkZ0UFk3S3NVRTFXazFOY3pyLWgwcVZFcWFMZUQ0b2Qzd1dDQjZWV0lGd2tvaDhiQQ?oc=5",
+"OpenAI countersues Apple for stealing trade secrets",
+"https://news.google.com/rss/articles/CBMioAFBVV95cUxOanQycFJEajNxdE50c0xGTkpDeGlsaUFUdDJZaXhWZU1vTEJSRS1Zc1pPZ3RrX19oUFRCMVhPdHkxWF9QYnl3YV9uZExBOExFWXk2SUpzNmFGd01hM3ZMUWNyckhTdzc4d1Rpb2g0NURNZjZMWTAzTlF2QjRCZW1qbzFqbHNnblh6LVFjUjlJdUVVSE5oN3NZcXJmN3FGR0t00gGmAUFVX3lxTE54U0ZaVnhJdGtVLTYwTmxSSzRqY2dRdFRxZE1jc0xYdFVzRWNmMDgxZ2tvSkNzMUI1T2pFaGNEVmxVQXBTTm1YczNKU1hjMG1KTTBmbUM5SjhxMmZ2UVA5SU85NHd6ZGZSQU1Qcl9PelVDNFdNVXVXdlNsdHZkcl9mZkxRVDRIejJlcGtmVENUS2pBVkduZEVHcGJTUkp2M1RKZlJ5R1E?oc=5",
 true,
-"2026-11-23 13:59"
+"2026-11-27 18:56"
 ],
 [
-"DDay.it",
-"Nvidia, Trump: \"Reintegrare Huang scelta migliore per la società e gli Stati Uniti\"",
-"https://www.dday.it/news/38/trump-reintegrare-huang-a-nvidia-scelta-migliore-per-la-societa-e-gli-stati-uniti",
-true,
-"2026-11-23 13:46"
-],
-[
-"HDblog",
-"Jensen Huang torna alla guida di Nvidia: reintegrato come CEO e membro del consiglio",
-"https://www.hdblog.it/nvidia/articoli/n677951/jensen-huang-torna-nvidia-ceo/",
-true,
-"2026-11-23 13:10"
-],
-[
-"Bloomberg",
-"US Probing Alice Huang, Megaspeed Amid Ties to Nvidia",
-"https://www.bloomberg.com/news/videos/2026-11-23/us-probing-alice-huang-megaspeed-amid-ties-to-nvidia-video",
+"Financial Times",
+"OpenAI countersues Apple for stealing trade secrets",
+"https://www.ft.com/content/af599e07-d44c-4068-ab84-6ee3c85551d4?syn-25a6b1a6=1",
 false,
-"2026-11-23 13:09"
-],
-[
-"Washington Post",
-"Trump urges Nvidia to reinstate Jensen Huang, calling him ‘best thing’ for U.S.",
-"https://www.washingtonpost.com/technology/2026/11/23/trump-urges-nvidia-reinstate-jensen-huang-calling-him-best-thing-us/",
-false,
-"2026-11-23 11:43"
-],
-[
-"Bloomberg",
-"Jensen Huang Affair Aftermath Could Push China Further Behind US in AI Race",
-"https://www.bloomberg.com/news/newsletters/2026-11-23/jensen-huang-affair-aftermath-could-push-china-further-behind-us-in-ai-race",
-false,
-"2026-11-23 11:28"
-],
-[
-"Analytics Insight",
-"Bessent Signals Possible Jensen Huang Return as NVIDIA Faces Export Compliance Scrutiny",
-"https://www.analyticsinsight.net/news/bessent-signals-possible-jensen-huang-return-as-nvidia-faces-export-compliance-scrutiny",
-true,
-"2026-11-23 10:02"
+"2026-11-27 18:20"
 ]
 ],
-"picco": 8,
-"picco_ora": "2026-11-23 15:00"
+"picco": 6,
+"picco_ora": "2026-11-27 19:54"
 }
 ]
 }
