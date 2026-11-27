@@ -2,6 +2,7 @@ name: AIgregatore breaking news
 # Ogni ora (Manlio, 23/11 17:05; prima ogni 10 minuti) legge i feed delle testate (solo titoli e link) e aggiorna aigregatore/ultimora.json.
 # Nessuna intelligenza artificiale, nessun token. Il programma sta in .github/ultimora/.
 # Dal 25/11/2026 raccoglie anche cosa cerca la gente nelle ultime ore (Wikipedia ora per ora, suggerimenti di Google): .github/ricerche/.
+# Dal 27/11/2026 legge anche la ricerca generale di Google News (USA «artificial intelligence», Italia «intelligenza artificiale»): .github/ricerche/google/.
 # Il «cron» di GitHub salta spesso le partenze: per questo il lavoro resta acceso quasi 6 ore,
 # controlla ogni ora e prima di chiudersi (entro 5 ore e 15, ben prima del limite di 6 ore) fa ripartire se stesso. Il cron serve solo da riserva.
 on:

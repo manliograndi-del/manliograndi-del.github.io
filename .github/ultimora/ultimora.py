@@ -172,5 +172,19 @@ if __name__ == "__main__":
         sys.exit()
     ora = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)
     with ThreadPoolExecutor(8) as ex: arts = [a for r in ex.map(una_fonte, leggi_csv(os.path.join(QUI, "fonti.csv"))) for a in r]
+    # ricerca generale di Google News, USA e Italia (Manlio 27/11/2026): contano solo le testate fidate; la foto oraria
+    # (posizioni) va in .github/ricerche/google/ e il giro completo la usa per la classifica (ricerca_google.py)
+    try:
+        sys.path.insert(0, QUI); import ricerca_google as GN
+        nostre = {r["sito"] for r in leggi_csv(os.path.join(QUI, "fonti.csv"))}
+        dove = os.path.join(os.path.dirname(QUI), "ricerche", "google")
+        g = 0
+        for r in GN.foto(dove, ora.replace(tzinfo=dt.timezone.utc), quante=60):
+            t = r["titolo"] if r["ed"] == "us" else re.sub(r"\b(ai|ia|Ai|Ia)\b", "", r["titolo"])
+            if not r["data"] or not GN.fidata(r["sito"], nostre) or not AI.search(t): continue
+            arts.append(dict(sito=r["sito"], titolo=r["titolo"], link=r["link"], data=r["data"])); g += 1
+            if r["ed"] == "it": ITALIANE.add(r["sito"])
+        print(f"Google News: {g} articoli di testate fidate")
+    except Exception as e: print("Google News:", str(e)[:100])
     print(f"{len(arts)} voci lette")
     scrivi(cerca(arts, os.path.join(cartella, "dati.json"), ora), cartella, ora)
