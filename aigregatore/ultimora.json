@@ -1,28 +1,35 @@
 {
-"ora": "2026-11-27 22:09",
+"ora": "2026-11-27 23:09",
 "notizie": [
 {
 "t": "OpenAI countersues Apple for stealing trade secrets",
 "u": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOanQycFJEajNxdE50c0xGTkpDeGlsaUFUdDJZaXhWZU1vTEJSRS1Zc1pPZ3RrX19oUFRCMVhPdHkxWF9QYnl3YV9uZExBOExFWXk2SUpzNmFGd01hM3ZMUWNyckhTdzc4d1Rpb2g0NURNZjZMWTAzTlF2QjRCZW1qbzFqbHNnblh6LVFjUjlJdUVVSE5oN3NZcXJmN3FGR0t00gGmAUFVX3lxTE54U0ZaVnhJdGtVLTYwTmxSSzRqY2dRdFRxZE1jc0xYdFVzRWNmMDgxZ2tvSkNzMUI1T2pFaGNEVmxVQXBTTm1YczNKU1hjMG1KTTBmbUM5SjhxMmZ2UVA5SU85NHd6ZGZSQU1Qcl9PelVDNFdNVXVXdlNsdHZkcl9mZkxRVDRIejJlcGtmVENUS2pBVkduZEVHcGJTUkp2M1RKZlJ5R1E?oc=5",
 "gratis": true,
 "it": false,
-"primo": "2026-11-27 18:20",
-"n2": 3,
-"n6": 8,
+"primo": "2026-11-27 18:56",
+"n2": 2,
+"n6": 6,
 "ar": [
 [
-"Los Angeles Times",
-"OpenAI accuses Apple of pressuring suppliers to block its new devices",
-"https://news.google.com/rss/articles/CBMiuwFBVV95cUxQNW14dzN0R2xYSXZxOXNmVXI5VHFwSUJQZG1GQTJON1BBRjl4MWxMejFqNFI4YnE1SmFlR0FwR1hXal9rZndYSHRIX29yRnlVaV9rbHJxX2lCYkdRU1Z1eVdNNWU3S0ZsbTU1aUtXYzZEQTY4LW43SVdLcUZObDktWlpMSFA5STJRU0o1cU0tNDV4ZTk0MXd4VGxNYUh1Yzk3SXJtcW9xV3p3Q20xdURmZWRXUnN0MzVJOVRn",
+"Financial Times",
+"OpenAI countersues Apple for stealing trade secrets",
+"https://www.ft.com/content/af599e07-d44c-4068-ab84-6ee3c85551d4?syn-25a6b1a6=1",
 false,
-"2026-11-27 22:03"
+"2026-11-27 23:00"
 ],
 [
 "Reuters",
 "OpenAI countersues Apple for stealing trade secrets",
 "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQa0FibW0xZFFBUlJ2MGJkd0NEcWZtRzkzUkdWcFl1VnlRN2dRMkpjWHpKVXlIekttSno1b1RMeWxJN2dtU0ZlS085Y1ZqTkpfM2Jaci13RUdMNFVPOWtqRldaazVrX25mMExUSkU0SmJRcHJsdnZxMWJXU05MNXFzc211YzlXNzMwRTVUM1k1MW5RQTdHbnRpU1p6Y2hQMFE0UnVBSk45eHg?oc=5",
 false,
-"2026-11-27 20:54"
+"2026-11-27 23:00"
+],
+[
+"Los Angeles Times",
+"OpenAI accuses Apple of pressuring suppliers to block its new devices",
+"https://news.google.com/rss/articles/CBMiuwFBVV95cUxQNW14dzN0R2xYSXZxOXNmVXI5VHFwSUJQZG1GQTJON1BBRjl4MWxMejFqNFI4YnE1SmFlR0FwR1hXal9rZndYSHRIX29yRnlVaV9rbHJxX2lCYkdRU1Z1eVdNNWU3S0ZsbTU1aUtXYzZEQTY4LW43SVdLcUZObDktWlpMSFA5STJRU0o1cU0tNDV4ZTk0MXd4VGxNYUh1Yzk3SXJtcW9xV3p3Q20xdURmZWRXUnN0MzVJOVRn",
+false,
+"2026-11-27 22:03"
 ],
 [
 "Al Jazeera",
@@ -58,13 +65,6 @@ false,
 "https://news.google.com/rss/articles/CBMioAFBVV95cUxOanQycFJEajNxdE50c0xGTkpDeGlsaUFUdDJZaXhWZU1vTEJSRS1Zc1pPZ3RrX19oUFRCMVhPdHkxWF9QYnl3YV9uZExBOExFWXk2SUpzNmFGd01hM3ZMUWNyckhTdzc4d1Rpb2g0NURNZjZMWTAzTlF2QjRCZW1qbzFqbHNnblh6LVFjUjlJdUVVSE5oN3NZcXJmN3FGR0t00gGmAUFVX3lxTE54U0ZaVnhJdGtVLTYwTmxSSzRqY2dRdFRxZE1jc0xYdFVzRWNmMDgxZ2tvSkNzMUI1T2pFaGNEVmxVQXBTTm1YczNKU1hjMG1KTTBmbUM5SjhxMmZ2UVA5SU85NHd6ZGZSQU1Qcl9PelVDNFdNVXVXdlNsdHZkcl9mZkxRVDRIejJlcGtmVENUS2pBVkduZEVHcGJTUkp2M1RKZlJ5R1E?oc=5",
 true,
 "2026-11-27 18:56"
-],
-[
-"Financial Times",
-"OpenAI countersues Apple for stealing trade secrets",
-"https://www.ft.com/content/af599e07-d44c-4068-ab84-6ee3c85551d4?syn-25a6b1a6=1",
-false,
-"2026-11-27 18:20"
 ]
 ],
 "picco": 8,
